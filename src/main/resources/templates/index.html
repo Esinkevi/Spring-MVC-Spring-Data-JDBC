@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Список контактов</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-4">
+    <h2 class="mb-4">Список контактов</h2>
+
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Имя</th>
+            <th>Фамилия</th>
+            <th>Телефон</th>
+            <th>Действия</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="contact : ${contacts}">
+            <td th:text="${contact.id}"></td>
+            <td th:text="${contact.name}"></td>
+            <td th:text="${contact.lastName}"></td>
+            <td th:text="${contact.phoneNumber}"></td>
+            <td>
+                <a th:href="@{/edit/{id}(id=${contact.id})}" class="btn btn-warning btn-sm">Редактировать</a>
+                <a th:href="@{/delete/{id}(id=${contact.id})}" class="btn btn-danger btn-sm">Удалить</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h3 class="mt-4">Добавить / Редактировать контакт</h3>
+    <form th:action="@{/save}" th:object="${contact}" method="post">
+        <input type="hidden" th:field="*{id}"> <!-- Если контакт новый, ID пустой -->
+        <div class="mb-3">
+            <label class="form-label">Имя:</label>
+            <input type="text" class="form-control" th:field="*{name}" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Фамилия:</label>
+            <input type="text" class="form-control" th:field="*{lastName}" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Телефон:</label>
+            <input type="text" class="form-control" th:field="*{phoneNumber}" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Сохранить</button>
+    </form>
+</div>
+</body>
+</html>
